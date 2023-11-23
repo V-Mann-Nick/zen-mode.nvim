@@ -94,7 +94,7 @@ function M.round(num)
 end
 
 function M.height()
-  local height = vim.o.lines - vim.o.cmdheight
+  local height = vim.o.lines - vim.o.cmdheight - 1
   return (vim.o.laststatus == 3) and height - 1 or height
 end
 
@@ -119,7 +119,7 @@ function M.layout(opts)
     width = M.round(width),
     height = M.round(height),
     col = M.round((vim.o.columns - width) / 2),
-    row = M.round((M.height() - height) / 2),
+    row = M.round((M.height() - height) / 2) + 1,
   }
 end
 
@@ -134,7 +134,7 @@ function M.fix_layout(win_resized)
     local height = vim.api.nvim_win_get_height(M.win)
     local width = vim.api.nvim_win_get_width(M.win)
     local col = M.round((vim.o.columns - width) / 2)
-    local row = M.round((M.height() - height) / 2)
+    local row = M.round((M.height() - height) / 2) + 1
     local cfg = vim.api.nvim_win_get_config(M.win)
     -- HACK: col is an array?
     local wcol = type(cfg.col) == "number" and cfg.col or cfg.col[false]
@@ -162,7 +162,7 @@ function M.create(opts)
     width = vim.o.columns,
     height = M.height(),
     focusable = false,
-    row = 0,
+    row = 1,
     col = 0,
     style = "minimal",
     zindex = opts.zindex - 10,
